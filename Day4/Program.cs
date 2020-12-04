@@ -61,14 +61,14 @@ namespace Day4
 					return;
 				}
 
-				if (i < 3 && !CheckYear(int.Parse(match.Groups[1].Value), years[i]))
+				switch (i)
 				{
-					return;
-				}
-				
-				if (i == 3 && !CheckHeight(int.Parse(match.Groups[1].Value), match.Groups[2].Value))
-				{
-					return;
+					case > 3:
+						continue;
+					case < 3 when !CheckYear(int.Parse(match.Groups[1].Value), years[i]):
+						return;
+					case 3 when !CheckHeight(int.Parse(match.Groups[1].Value), match.Groups[2].Value):
+						return;
 				}
 			}
 
