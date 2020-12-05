@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Day5
@@ -10,34 +9,23 @@ namespace Day5
 		{
 			var input = File.ReadAllLines("Day5.txt");
 
-			List<int> seats = new();
+			int[] seats = new int[input.Length];
 
 			// Part 1
 			int highest = 0;
-			foreach (var seat in input)
+			for (int i = 0; i < input.Length; i++)
 			{
-				int row = 0;
-				int column = 0;
-				for (int i = 0; i < 10; i++)
+				string seat = input[i];
+				int id = 0;
+				for (int j = 0; j < seat.Length; j++)
 				{
-					if (i < 7)
+					if (seat[j] == 'B' || seat[j] == 'R')
 					{
-						if (seat[i] == 'B')
-						{
-							row += 1 << (6 - i);
-						}
-					}
-					else
-					{
-						if (seat[i] == 'R')
-						{
-							column += 1 << (9 - i);
-						}
+						id |= 1 << (9 - j);
 					}
 				}
 
-				int id = row * 8 + column;
-				seats.Add(id);
+				seats[i] = id;
 
 				if (id > highest)
 				{
@@ -48,19 +36,12 @@ namespace Day5
 			Console.WriteLine($"Highest seat ID: {highest}");
 
 			// Part 2
-			seats.Sort();
+			Array.Sort(seats);
 
-			int mine = 0;
-			for (int i = 1; i < seats.Count - 1; i++)
-			{
-				if (seats[i] - 1 != seats[i - 1])
-				{
-					mine = seats[i] - 1;
-					break;
-				}
-			}
+			int k = 1;
+			for (; seats[k] - 1 == seats[k - 1]; k++) ;
 
-			Console.WriteLine($"My seat ID: {mine}");
+			Console.WriteLine($"My seat ID: {seats[k] - 1}");
 		}
 	}
 }
