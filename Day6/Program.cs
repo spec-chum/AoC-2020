@@ -41,9 +41,10 @@ namespace Day6
 			Console.WriteLine($"Total number of answers: {totalAnswers}");
 			Console.WriteLine($"Number of questions groups all answered yes to: {totalQuestions}");
 		}
+
 		static ReadOnlySpan<char> RemoveDuplicates(ReadOnlySpan<char> str)
 		{
-			char[] result = new char[str.Length];
+			Span<char> result = new char[str.Length];
 
 			int j = 0;
 			for (int i = 0; i < str.Length; i++)
@@ -54,7 +55,7 @@ namespace Day6
 				}
 			}
 
-			return result.AsSpan().Slice(0, j);
+			return result.Slice(0, j);
 		}
 
 		private static bool Contains(ReadOnlySpan<char> str, char letter)
@@ -70,7 +71,7 @@ namespace Day6
 			return false;
 		}
 
-		static int Count(string str, char letter)
+		static int Count(ReadOnlySpan<char> str, char letter)
 		{
 			int count = 0;
 
