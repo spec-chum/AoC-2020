@@ -26,6 +26,7 @@ namespace Day8
 		private static void Execute()
 		{
 			Array.Clear(visited, 0, visited.Length - 1);
+
 			A = 0;
 			PC = 0;
 
@@ -36,12 +37,12 @@ namespace Day8
 				string opcode = input[PC];
 				int offset = int.Parse(opcode[4..]);
 
-				if (opcode.StartsWith("acc"))
+				if (opcode.StartsWith('a'))
 				{
 					A += offset;
 					PC++;
 				}
-				else if (opcode.StartsWith("jmp"))
+				else if (opcode.StartsWith('j'))
 				{
 					PC += offset;
 				}
@@ -55,12 +56,12 @@ namespace Day8
 		private static void Part2()
 		{
 			List<int> nops = new();
-			PopulateList(nops, "nop");
+			PopulateList(nops, 'n');
 			for (int i = 0; i < nops.Count; i++)
 			{
 				int nop = nops[i];
 				string temp = input[nop];
-				input[nop] = input[nop].Replace("nop", "jmp");
+				input[nop] = input[nop].Replace("no", "jm");
 
 				Execute();
 				if (PC == input.Length)
@@ -75,12 +76,12 @@ namespace Day8
 			}
 
 			List<int> jmps = new();
-			PopulateList(jmps, "jmp");
+			PopulateList(jmps, 'j');
 			for (int i = 0; i < jmps.Count; i++)
 			{
 				int jmp = jmps[i];
 				string temp = input[jmp];
-				input[jmp] = input[jmp].Replace("jmp", "nop");
+				input[jmp] = input[jmp].Replace("jm", "no");
 
 				Execute();
 				if (PC == input.Length)
@@ -95,12 +96,11 @@ namespace Day8
 			}
 		}
 
-		static void PopulateList(List<int> list, string mnenomic)
+		static void PopulateList(List<int> list, char mnenomic)
 		{
 			for (int i = 0; i < input.Length; i++)
 			{
-				string opcode = input[i][..3];
-				if (opcode == mnenomic)
+				if (input[i][0] == mnenomic)
 				{
 					list.Add(i);
 				}
