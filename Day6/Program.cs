@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Day6
@@ -8,6 +9,8 @@ namespace Day6
 		static void Main()
 		{
 			var input = File.ReadAllText("Day6.txt").Split("\n\n");
+
+			Stopwatch sw = Stopwatch.StartNew();
 
 			int totalAnswers = 0;
 			int totalQuestions = 0;
@@ -37,6 +40,9 @@ namespace Day6
 					}
 				}
 			}
+
+			sw.Stop();
+			Console.WriteLine(sw.Elapsed.TotalMilliseconds);
 
 			Console.WriteLine($"Total number of answers: {totalAnswers}");
 			Console.WriteLine($"Number of questions groups all answered yes to: {totalQuestions}");
