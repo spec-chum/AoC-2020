@@ -57,7 +57,7 @@ namespace Day9
 						}
 
 						Console.WriteLine($"Sum found: {min} + {max} = {min + max}");
-						break;
+						return;
 					}
 				}
 			}
