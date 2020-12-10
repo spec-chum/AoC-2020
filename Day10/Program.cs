@@ -9,7 +9,6 @@ namespace Day10
 		static void Main()
 		{
 			int[] input = Array.ConvertAll(File.ReadAllLines("Day10.txt"), int.Parse);
-			//int[] input = { 16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4 };
 
 			List<int> nums = new() { 0 };
 			nums.AddRange(input);
