@@ -86,8 +86,8 @@ namespace Day12
 				}
 			}
 
-			int NS = (int)MathF.Abs(location.Y);
-			int EW = (int)MathF.Abs(location.X);
+			int NS = Math.Abs(location.Y);
+			int EW = Math.Abs(location.X);
 			Console.WriteLine($"{NS} + {EW} = {NS + EW}");
 			Console.WriteLine(2458);
 		}
