@@ -56,18 +56,29 @@ namespace Day12
 						break;
 
 					case 'L':
-						// Flip and "fall through"
-						if (value == 90)
-						{
-							value = 270;
-						}
-						else if (value == 270)
-						{
-							value = 90;
-						}
-						goto case 'R';						
-					case 'R':
 						// Every angle is a multiple of 90 so don't bother with a transform matrix
+						switch (value)
+						{
+							case 90:
+								temp = waypoint.X;
+								waypoint.X = -waypoint.Y;
+								waypoint.Y = temp;
+								break;
+							case 180:
+								waypoint.X = -waypoint.X;
+								waypoint.Y = -waypoint.Y;
+								break;
+							case 270:
+								temp = waypoint.X;
+								waypoint.X = waypoint.Y;
+								waypoint.Y = -temp;
+								break;
+							default:
+								break;
+						}
+
+						break;
+					case 'R':
 						switch (value)
 						{
 							case 90:
