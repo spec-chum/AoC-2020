@@ -1,61 +1,62 @@
 ﻿using System;
 using System.IO;
+using System.Numerics;
 
 namespace Day12
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
 			var input = File.ReadAllLines("Day12.txt");
 
 			// Part 1
-			(int x, int y) location = (0, 0);
-			(int x, int y) waypoint = (1, 0);
+			Vector2 location = Vector2.Zero;
+			Vector2 waypoint = Vector2.UnitX;
 
 			ExecuteCommands(1, input, ref location, waypoint);
-			int EW = Math.Abs(location.x);
-			int NS = Math.Abs(location.y);
-			Console.WriteLine($"Part 1: {EW} + {NS} = {EW + NS}");
+
+			location = Vector2.Abs(location);
+			Console.WriteLine($"Part 1: {location.X} + {location.Y} = {location.X + location.Y}");
 
 			// Part 2
-			location = (0, 0);
-			waypoint = (10, 1);
+			location = Vector2.Zero;
+			waypoint = new(10, 1);
 
 			ExecuteCommands(2, input, ref location, waypoint);
-			EW = Math.Abs(location.x);
-			NS = Math.Abs(location.y);
-			Console.WriteLine($"Part 2: {EW} + {NS} = {EW + NS}");
+
+			location = Vector2.Abs(location);
+			Console.WriteLine($"Part 2: {location.X} + {location.Y} = {location.X + location.Y}");
 		}
 
-		private static void ExecuteCommands(int part, string[] input, ref (int x, int y) location, (int x, int y) waypoint)
+		private static void ExecuteCommands(int part, string[] input, ref Vector2 location, Vector2 waypoint)
 		{
-			ref (int x, int y) target = ref part == 1 ? ref location : ref waypoint;
+			ref Vector2 target = ref part == 1 ? ref location : ref waypoint;
 
 			foreach (var command in input)
 			{
 				char action = command[0];
-				int value = int.Parse(command[1..]);
+				float value = float.Parse(command[1..]);
 
-				int temp;
+				float temp;
 
 				switch (action)
 				{
 					case 'N':
-						target.y += value;
+						target.Y += value;
 						break;
 					case 'S':
-						target.y -= value;
+						target.Y -= value;
 						break;
 					case 'E':
-						target.x += value;
+						target.X += value;
 						break;
 					case 'W':
-						target.x -= value;
+						target.X -= value;
 						break;
 
 					case 'L':
-						// Flip and "Fallthrough"
+						// Flip and "fall through"
 						if (value == 90)
 						{
 							value = 270;
@@ -66,21 +67,22 @@ namespace Day12
 						}
 						goto case 'R';						
 					case 'R':
+						// Every angle is a multiple of 90 so don't bother with a transform matrix
 						switch (value)
 						{
 							case 90:
-								temp = waypoint.x;
-								waypoint.x = waypoint.y;
-								waypoint.y = -temp;
+								temp = waypoint.X;
+								waypoint.X = waypoint.Y;
+								waypoint.Y = -temp;
 								break;
 							case 180:
-								waypoint.x = -waypoint.x;
-								waypoint.y = -waypoint.y;
+								waypoint.X = -waypoint.X;
+								waypoint.Y = -waypoint.Y;
 								break;
 							case 270:
-								temp = waypoint.x;
-								waypoint.x = -waypoint.y;
-								waypoint.y = temp;
+								temp = waypoint.X;
+								waypoint.X = -waypoint.Y;
+								waypoint.Y = temp;
 								break;
 							default:
 								break;
@@ -89,8 +91,7 @@ namespace Day12
 						break;
 
 					case 'F':
-						location.x += waypoint.x * value;
-						location.y += waypoint.y * value;
+						location += waypoint * value;
 						break;
 
 					default:
