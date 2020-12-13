@@ -13,25 +13,14 @@ namespace Day12
 			West
 		}
 
-		struct Vector
-		{
-			public int X, Y;
-
-			public Vector(int x, int y)
-			{
-				X = x;
-				Y = y;
-			}
-		}
-
 		static void Main(string[] args)
 		{
-			//var input = "F10\nN3\nF7\nR90\nF11".Split('\n');
 			var input = File.ReadAllLines("Day12.txt");
 
 			Direction dir = Direction.East;
-			Vector location = new(0, 0);
+			(int x, int y) location = (0, 0);
 
+			// Part 1
 			foreach (var command in input)
 			{
 				char action = command[0];
@@ -40,16 +29,16 @@ namespace Day12
 				switch (action)
 				{
 					case 'N':
-						location.Y += value;
+						location.y += value;
 						break;
 					case 'S':
-						location.Y -= value;
+						location.y -= value;
 						break;
 					case 'E':
-						location.X += value;
+						location.x += value;
 						break;
 					case 'W':
-						location.X -= value;
+						location.x -= value;
 						break;
 
 					case 'L':
@@ -62,22 +51,22 @@ namespace Day12
 					case 'F':
 						if (dir == Direction.North)
 						{
-							location.Y += value;
+							location.y += value;
 							break;
 						}
 						else if (dir == Direction.South)
 						{
-							location.Y -= value;
+							location.y -= value;
 							break;
 						}
 						else if (dir == Direction.East)
 						{
-							location.X += value;
+							location.x += value;
 							break;
 						}
 						else
 						{
-							location.X -= value;
+							location.x -= value;
 							break;
 						}
 
@@ -86,10 +75,92 @@ namespace Day12
 				}
 			}
 
-			int NS = Math.Abs(location.Y);
-			int EW = Math.Abs(location.X);
-			Console.WriteLine($"{NS} + {EW} = {NS + EW}");
-			Console.WriteLine(2458);
+			int EW = Math.Abs(location.x);
+			int NS = Math.Abs(location.y);
+			Console.WriteLine($"Part 1: {EW} + {NS} = {EW + NS}");
+
+			// Part 2
+			location = new(0, 0);
+			(int x, int y) waypoint = (10, 1);
+
+			foreach (var command in input)
+			{
+				char action = command[0];
+				int value = int.Parse(command[1..]);
+
+				int temp;
+				switch (action)
+				{
+					case 'N':
+						waypoint.y += value;
+						break;
+					case 'S':
+						waypoint.y -= value;
+						break;
+					case 'E':
+						waypoint.x += value;
+						break;
+					case 'W':
+						waypoint.x -= value;
+						break;
+
+					case 'L':
+						switch (value)
+						{
+							case 90:
+								temp = waypoint.x;
+								waypoint.x = -waypoint.y;
+								waypoint.y = temp;
+								break;
+
+							case 180:
+								waypoint.x = -waypoint.x;
+								waypoint.y = -waypoint.y;
+								break;
+							case 270:
+								temp = waypoint.x;
+								waypoint.x = waypoint.y;
+								waypoint.y = -temp;
+								break;
+							default:
+								break;
+						}
+						break;
+					case 'R':
+						switch (value)
+						{
+							case 90:
+								temp = waypoint.x;
+								waypoint.x = waypoint.y;
+								waypoint.y = -temp;
+								break;
+							case 180:
+								waypoint.x = -waypoint.x;
+								waypoint.y = -waypoint.y;
+								break;
+							case 270:
+								temp = waypoint.x;
+								waypoint.x = -waypoint.y;
+								waypoint.y = temp;
+								break;
+							default:
+								break;
+						}
+						break;
+
+					case 'F':
+						location.x += waypoint.x * value;
+						location.y += waypoint.y * value;
+						break;
+
+					default:
+						break;
+				}
+			}
+
+			EW = Math.Abs(location.x);
+			NS = Math.Abs(location.y);
+			Console.WriteLine($"Part 2: {EW} + {NS} = {EW + NS}");
 		}
 	}
 }
