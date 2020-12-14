@@ -1,65 +1,58 @@
 ﻿using System;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Day14
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
 			//var input = "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X\nmem[8] = 11\nmem[7] = 101\nmem[8] = 0".Split('\n');
 
 			var input = File.ReadAllLines("Day14.txt");
 
-			ulong[] mem = new ulong[65536];
+			long[] mem = new long[65536];
+			long maskZeros = 0;
+			long maskOnes = 0;
 
-			string mask = "";
-			ulong value;
-			int address;
-
-			foreach (var line in input)
+			for (int i = 0; i < input.Length; i++)
 			{
+				var line = input[i].AsSpan();
 				if (line.StartsWith("ma"))
 				{
-					mask = line.Substring(7, 36);
+					maskZeros = 0;
+					maskOnes = 0;
+
+					var mask = line[7..];
+					for (int j = 0; j < mask.Length; j++)
+					{
+						switch (mask[j])
+						{
+							case '0':
+								maskZeros |= 1L << (mask.Length - 1 - j);
+								break;
+							case '1':
+								maskOnes |= 1L << (mask.Length - 1 - j);
+								break;
+							default:
+								continue;
+						}
+					}
 				}
 				else
 				{
-					var matches = Regex.Matches(line, @"\[(?<addr>[0-9]+)\] = (?<value>[0-9]+)");
-					for (int i = 0; i < matches.Count; i++)
-					{
-						var groups = matches[i].Groups;
-						address = int.Parse(groups["addr"].Value);
-						value = ulong.Parse(groups["value"].Value);
+					int addrEnd = line.IndexOf(']');
+					int address = int.Parse(line[4..addrEnd]);
+					long value = long.Parse(line[(addrEnd + 3)..]);
 
-						for (int j = 0; j < mask.Length; j++)
-						{
-							char bit = mask[j];
-							if (bit == 'X')
-							{
-								continue;
-							}
-
-							if (bit == '1')
-							{
-								value |= (ulong)1 << (35 - j);
-							}
-							else
-							{
-								value &= ~((ulong)1 << (35 - j));
-							}
-						}
-
-						mem[address] = value;
-					}				
+					mem[address] = (value | maskOnes) & ~maskZeros;
 				}
 			}
 
-			ulong total = 0;
-			foreach (var data in mem)
+			long total = 0;
+			for (int i = 0; i < mem.Length; i++)
 			{
-				total += data;
+				total += mem[i];
 			}
 			Console.WriteLine(total);
 		}
