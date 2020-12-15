@@ -97,11 +97,10 @@ namespace Day14
 				{
 					int addrEnd = line.IndexOf(']');
 					long address = long.Parse(line[4..addrEnd]);
-
-					address = (address | maskOnes) & ~maskX;
-
 					long value = long.Parse(line[(addrEnd + 3)..]);
 					long mask = 0;
+
+					address = (address | maskOnes) & ~maskX;
 
 					do
 					{
