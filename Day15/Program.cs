@@ -9,14 +9,14 @@ namespace Day15
 		{
 			List<int> input = new() { 16, 1, 0, 18, 12, 14, 19 };
 
-			int total = RunPart(2020, input);
+			int total = RunPart(input, 2020);
 			Console.WriteLine(total);
 
-			total = RunPart(30_000_000, input);
+			total = RunPart(input, 30_000_000);
 			Console.WriteLine(total);
 		}
 
-		private static int RunPart(int totalLoops, List<int> input)
+		private static int RunPart(List<int> input, int totalLoops)
 		{
 			Dictionary<int, int> indexes = new();
 
