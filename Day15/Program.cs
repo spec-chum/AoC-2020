@@ -7,7 +7,7 @@ namespace Day15
 	{
 		static void Main()
 		{
-			List<int> input = new() { 16, 1, 0, 18, 12, 14, 19 };
+			int[] input = new int[] { 16, 1, 0, 18, 12, 14, 19 };
 
 			int total = RunPart(input, 2020);
 			Console.WriteLine(total);
@@ -16,16 +16,16 @@ namespace Day15
 			Console.WriteLine(total);
 		}
 
-		private static int RunPart(List<int> input, int totalLoops)
+		private static int RunPart(int[] input, int totalLoops)
 		{
 			Dictionary<int, int> indexes = new();
 
-			for (int i = 0; i < input.Count; i++)
+			for (int i = 0; i < input.Length; i++)
 			{
 				indexes[input[i]] = i;
 			}
 
-			int index = input.Count - 1;
+			int index = input.Length - 1;
 			int currentNum = input[index];
 			totalLoops--;
 
