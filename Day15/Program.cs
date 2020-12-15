@@ -9,14 +9,14 @@ namespace Day15
 		{
 			List<int> input = new() { 16, 1, 0, 18, 12, 14, 19 };
 
-			int total = RunPart(1, input);
+			int total = RunPart(2020, input);
 			Console.WriteLine(total);
 
-			total = RunPart(2, input);
+			total = RunPart(30_000_000, input);
 			Console.WriteLine(total);
 		}
 
-		private static int RunPart(int part, List<int> input)
+		private static int RunPart(int totalLoops, List<int> input)
 		{
 			Dictionary<int, int> indexes = new();
 
@@ -28,7 +28,7 @@ namespace Day15
 			int index = input.Count - 1;
 			int currentNum = input[index];
 
-			while (index + 1 < (part == 1 ? 2020 : 30_000_000))
+			while (index < totalLoops - 1)
 			{
 				if (!indexes.ContainsKey(currentNum))
 				{
