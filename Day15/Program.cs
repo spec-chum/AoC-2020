@@ -27,8 +27,9 @@ namespace Day15
 
 			int index = input.Count - 1;
 			int currentNum = input[index];
+			totalLoops--;
 
-			while (index < totalLoops - 1)
+			while (index < totalLoops)
 			{
 				if (!indexes.ContainsKey(currentNum))
 				{
